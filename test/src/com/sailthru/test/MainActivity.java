@@ -9,6 +9,10 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
+	public static String apid = "nil";
+	public static String mid = "nil";
+	
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +23,7 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+       
         return true;
     }
     
@@ -30,5 +35,8 @@ public class MainActivity extends Activity {
     public void whiteButton(View v)
     {
     	Toast.makeText(getApplicationContext(), "White button presssed", Toast.LENGTH_SHORT).show();
+    	
+        Toast.makeText(getApplicationContext(), "APID: " + apid, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "MID: " + mid, Toast.LENGTH_SHORT).show();
     }
 }
