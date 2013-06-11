@@ -14,7 +14,7 @@ import com.urbanairship.push.PushManager;
 
 public class IntentReceiver extends BroadcastReceiver {
 
-    private static final String logTag = "PushSample";
+    private static final String logTag = "Sailthru Push";
 
     @Override
     public void onReceive(Context context, Intent intent) {
