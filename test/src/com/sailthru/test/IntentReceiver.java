@@ -70,6 +70,10 @@ public class IntentReceiver extends BroadcastReceiver {
                 continue;
             }
             Log.i(logTag, "Push Notification Extra: ["+key+" : " + intent.getStringExtra(key) + "]");
+            
+            // Store the APID and MID
+            MainActivity.apid = PushManager.shared().getAPID();
+            MainActivity.mid = intent.getStringExtra(key);
         }
     }
 }
