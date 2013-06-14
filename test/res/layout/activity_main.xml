@@ -17,15 +17,27 @@
         android:src="@drawable/sailthru_logo" />
     
     <Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:layout_marginTop="190dp"
-    android:layout_marginLeft="95dp"
-    android:background="#FFFFFF"
-    android:textColor="#00cced"
-    android:onClick="whiteButton"
-    android:text="White Button" />
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="20dp"
+	    android:paddingRight="20dp"
+	    android:layout_marginTop="190dp"
+	    android:layout_marginLeft="95dp"
+	    android:background="#FFFFFF"
+	    android:textColor="#00cced"
+	    android:onClick="whiteButton"
+	    android:text="White Button" />
+    
+    <Button
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="20dp"
+	    android:paddingRight="20dp"
+	    android:layout_marginTop="290dp"
+	    android:layout_marginLeft="100dp"
+	    android:background="#FFFFFF"
+	    android:textColor="#00cced"
+	    android:onClick="queue"
+	    android:text="Test Queue" />
     
 </RelativeLayout>
