@@ -1,5 +1,6 @@
 package com.sailthru.test;
 
+import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import sailthru.Event.STEvent;
@@ -49,10 +50,12 @@ public class MainActivity extends Activity {
     }
     
     // Queue Unit Test
-    public void queue(View v) throws InvalidSailthruEventException
+    public void queue(View v) throws InvalidSailthruEventException, IOException
     {
+    	STQueuer.init(this, "testapp");
+    	
     	// Get elements before queue creation
-    	ConcurrentLinkedQueue<STEvent> queue = STQueuer.getEvents(10);
+    	ConcurrentLinkedQueue<STEvent> queue = STQueuer.getEvents(100);
     	
     	if(queue.size() == 0)
     	{
@@ -63,7 +66,7 @@ public class MainActivity extends Activity {
     	{
     		if(queue.peek() != null)
     		{
-    			Logger.i("Before insertion, queue contains: " + queue.poll());
+    			Logger.i("Before insertion, queue contained: " + queue.poll().getEvent());
     		}
     		else
     		{
@@ -74,10 +77,11 @@ public class MainActivity extends Activity {
     	// Add elements
     	ConcurrentLinkedQueue<STEvent> list = new ConcurrentLinkedQueue<STEvent>();
     	
-    	for(int i = 0; i < 10; i++)
+    	for(int i = 1; i < 5; i++)
     	{
-    		SailthruEvent stevent = new SailthruEvent.Builder().tag("t"+i).event("e"+i).build();
+    		SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).build();
     		list.add(stevent.getSTEvent());
+    		Logger.i("Adding " + stevent.getSTEvent().getEvent() + " to queue.");
     	}
     	
     	STQueuer.addEvents(list);
