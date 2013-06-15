@@ -60,6 +60,7 @@ public class MainActivity extends Activity {
     		started = true;
     	}
     	
+    	/*
     	Logger.i("Queue iniitally contains " + STQueue.getSize() + " elements.");
     	
     	Logger.i("Adding random number of elements.");
@@ -71,9 +72,9 @@ public class MainActivity extends Activity {
     	
     	Logger.i("Queue contains " + STQueue.getSize() + " elements.");
     	
-    	Logger.i("Dequeueing 3 elements.");
+    	Logger.i("Dequeueing all elements.");
     	
-    	ConcurrentLinkedQueue<STEvent> result = STQueuer.getEvents(3);
+    	ConcurrentLinkedQueue<STEvent> result = STQueuer.getEvents((int) (Math.random()*5));
     	
     	while(result.size() != 0)
     	{
@@ -81,6 +82,7 @@ public class MainActivity extends Activity {
     	}
     	
     	Logger.i("Queue finally contains " + STQueue.getSize() + " elements.");
+    	*/
     	
     	/*
     	// Get elements before queue creation
