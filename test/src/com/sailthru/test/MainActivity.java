@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
     	
     	Logger.i("Queue contains " + STQueue.getSize() + " elements.");
     	
-    	Logger.i("Dequeueing all elements.");
+    	Logger.i("Dequeueing some elements.");
     	
     	ConcurrentLinkedQueue<STEvent> result = STQueuer.getEvents((int) (Math.random()*5));
     	
@@ -111,40 +111,49 @@ public class MainActivity extends Activity {
     	Logger.i("After insertion, the queue contains " + STQueue.getSize() + " elements.");
     	*/
     	
-    	/*
+    	//
     	// Get elements before queue creation
-    	Logger.i("Before insertion, the queue contains " + STQueue.getSize() + " elements.");
     	
-    	while(STQueue.getSize() != 0)
+    	for(int p = 0; p < 4; p++)
+    	{
+    		
+    	Logger.i("Initially, the queue contains " + STQueue.getSize() + " elements.");
+
+    	// Add elements
+    	
+    	for(int i = 1; i < 5 + Math.random()*5; i++)
+    	{
+    		SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).build();
+    		STQueue.queue.add(stevent.getSTEvent());
+    	}
+    	
+    	// Get elements after queue creation
+    	Logger.i("After insertion, the queue contains " + STQueue.getSize() + " elements.");
+    	
+    	// Remove some elements
+    	
+    	Logger.i("Dequeueing some elements.");
+    	
+    	final int SIZE = STQueue.getSize();
+    	
+    	while(STQueue.getSize() > SIZE - 5*Math.random())
     	{
     		if(STQueue.queue.peek() != null)
     		{
-    			Logger.i("Before insertion, queue contains: " + STQueue.queue.peek().getEvent() +". Removing it.");
-    			STQueue.queue.remove();
+    			Logger.i("Dequeued: " + STQueue.queue.peek().getEvent());
     		}
     		else
     		{
-    			Logger.e("Invalid element in queue");
+    			Logger.e("Invalid element in queue!!!");
     		}
+    		
+    		STQueue.queue.remove();
     	}
     	
     	// Get elements after queue deletion
     	Logger.i("After removal, the queue contains " + STQueue.getSize() + " elements.");
     	
-    	// Add elements
-    	ConcurrentLinkedQueue<STEvent> list = new ConcurrentLinkedQueue<STEvent>();
-    	
-    	for(int i = 1; i < 4; i++)
-    	{
-    		SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).build();
-    		list.add(stevent.getSTEvent());
     	}
-    	
-    	STQueuer.addEvents(list);
-    	
-    	// Get elements after queue creation
-    	Logger.i("After insertion, the queue contains " + STQueue.getSize() + " elements.");
-    	
-    	*/
+    	//
     }
 }

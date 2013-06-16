@@ -14,6 +14,7 @@ public class MyApplication extends Application {
 		
 		super.onCreate();
 		
+		
 		AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
 
 		UAirship.takeOff(this, options);
@@ -22,5 +23,6 @@ public class MyApplication extends Application {
 		
 		String apid = PushManager.shared().getAPID();
 		Logger.info("My Application onCreate - App APID: " + apid);
+		
 	}
 }
