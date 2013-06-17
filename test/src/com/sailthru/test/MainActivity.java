@@ -1,10 +1,12 @@
 package com.sailthru.test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import sailthru.Event.STEvent;
 import sailthru.Event.SailthruEvent;
+import sailthru.Exceptions.InvalidLocationException;
 import sailthru.Exceptions.InvalidSailthruEventException;
 import sailthru.Queuer.STQueue;
 import sailthru.Queuer.STQueuer;
@@ -51,7 +53,7 @@ public class MainActivity extends Activity {
     }
     
     // Queue Unit Test
-    public void queue(View v) throws InvalidSailthruEventException, IOException
+    public void queue(View v) throws InvalidSailthruEventException, IOException, InvalidLocationException
     {
     	if(started == false)
     	{
@@ -60,13 +62,33 @@ public class MainActivity extends Activity {
     		started = true;
     	}
     	
+    	//
+    	Logger.i("Inserting elements.");
+    	
+    	ConcurrentLinkedQueue<STEvent> list = new ConcurrentLinkedQueue<STEvent>();
+    	
+    	for(int i = 1; i < 1000; i++)
+    	{
+    		SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).tag("facebook").tag("google").url("www.sailthru.com").location(34, 12).build();
+    		list.add(stevent.getSTEvent());
+    	}
+    	
+    	STQueuer.addEvents(list);
+    	
+    	Logger.i("Queue finally contains " + STQueue.getSize() + " elements.");
+    	Logger.i("Emptying queue.");
+    	
+    	STQueuer.getEvents(10000);
+    	Logger.i("Queue finally contains " + STQueue.getSize() + " elements.");
+    	//
+    	
     	/*
-    	Logger.i("Queue iniitally contains " + STQueue.getSize() + " elements.");
+    	Logger.i("Queue initally contains " + STQueue.getSize() + " elements.");
     	
     	Logger.i("Adding random number of elements.");
     	for(int i = 0; i < 5 + Math.random()*5; i++)
     	{
-    		SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).build();
+    		SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).tag("facebook").tag("google").url("www.sailthru.com").location(34, 12).build();
     		STQueuer.addEvent(stevent.getSTEvent());
     	}
     	
@@ -111,19 +133,19 @@ public class MainActivity extends Activity {
     	Logger.i("After insertion, the queue contains " + STQueue.getSize() + " elements.");
     	*/
     	
-    	//
+    	/*
     	// Get elements before queue creation
     	
-    	for(int p = 0; p < 4; p++)
+    	for(int p = 0; p < 50; p++)
     	{
     		
     	Logger.i("Initially, the queue contains " + STQueue.getSize() + " elements.");
 
     	// Add elements
     	
-    	for(int i = 1; i < 5 + Math.random()*5; i++)
+    	for(int i = 1; i < 20 + Math.random()*10; i++)
     	{
-    		SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).build();
+    		SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).tag("facebook").tag("google").url("www.sailthru.com").location(34, 12).build();
     		STQueue.queue.add(stevent.getSTEvent());
     	}
     	
@@ -136,7 +158,7 @@ public class MainActivity extends Activity {
     	
     	final int SIZE = STQueue.getSize();
     	
-    	while(STQueue.getSize() > SIZE - 5*Math.random())
+    	while(STQueue.getSize() > SIZE - 19*Math.random())
     	{
     		if(STQueue.queue.peek() != null)
     		{
@@ -154,6 +176,6 @@ public class MainActivity extends Activity {
     	Logger.i("After removal, the queue contains " + STQueue.getSize() + " elements.");
     	
     	}
-    	//
+    	*/
     }
 }
