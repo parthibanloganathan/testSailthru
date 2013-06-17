@@ -1,7 +1,6 @@
 package com.sailthru.test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import sailthru.Event.STEvent;
@@ -50,6 +49,71 @@ public class MainActivity extends Activity {
     	
         Toast.makeText(getApplicationContext(), "APID: " + apid, Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), "MID: " + mid, Toast.LENGTH_SHORT).show();
+    }
+    
+    // Threaded Queue Unit Test
+    public void threadedqueue(View v) throws InvalidSailthruEventException, IOException, InvalidLocationException
+    {
+    	if(started == false)
+    	{
+    		STQueuer.init(this, "testapp");
+    		Logger.setLogTag("testapp");
+    		started = true;
+    	}
+    	
+    	//
+		// Thread to enqueue events
+		new Thread(new Runnable()
+		{
+			public void run()
+			{
+		    	Logger.i("Inserting elements.");
+		    	
+		    	ConcurrentLinkedQueue<STEvent> list = new ConcurrentLinkedQueue<STEvent>();
+		    	
+		    	for(int i = 1; i < 1000; i++)
+		    	{
+		    		SailthruEvent stevent;
+					try
+					{
+						stevent = new SailthruEvent.Builder().event("e"+i).tag("facebook").tag("google").url("www.sailthru.com").location(34, 12).build();
+						//list.add(stevent.getSTEvent());
+						STQueuer.addEvent(stevent.getSTEvent());
+						Logger.i("Added queue has " + STQueuer.getSize() + " elements.");
+					}
+					catch(Exception e)
+					{
+						Logger.e("Something went wrong when inserting element.");
+					}
+		    	}
+		    	
+		    	//STQueuer.addEvents(list);
+			}
+		}).start();
+		
+		
+		// Thread to dequeue events
+		new Thread(new Runnable()
+		{
+			public void run()
+			{
+		    	Logger.i("Removing elements.");
+		    	
+		    	for(int i = 0; i < 50; i++)
+		    	{
+		    		STQueuer.getEvents(20);
+		    		Logger.i("Removed queue has " + STQueuer.getSize() + " elements.");
+		    		
+		    		try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    	}
+			}
+		}).start();
+		
     }
     
     // Queue Unit Test
