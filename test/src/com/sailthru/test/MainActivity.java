@@ -1,6 +1,11 @@
 package com.sailthru.test;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import sailthru.Event.STEvent;
@@ -9,10 +14,13 @@ import sailthru.Exceptions.InvalidLocationException;
 import sailthru.Exceptions.InvalidSailthruEventException;
 import sailthru.Queuer.STQueue;
 import sailthru.Queuer.STQueuer;
+import sailthru.Sender.STSender;
 import sailthru.Utilities.Logger;
+import sailthru.Utilities.NetworkManager;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
@@ -51,6 +59,37 @@ public class MainActivity extends Activity {
         Toast.makeText(getApplicationContext(), "MID: " + mid, Toast.LENGTH_SHORT).show();
     }
     
+    // Async HTTP Request
+    public void request(View v) throws IOException
+    {
+    	if(started == false)
+    	{
+    		Logger.setLogTag("testapp");
+    		started = true;
+    	}
+    	
+    	NetworkManager.init(this);
+    	if(NetworkManager.isNetworkAvailable())
+    	{
+    		Logger.i("Sending requests");
+    		
+    		InputStream is = getAssets().open("url_test.txt");
+    		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+    		String line;
+    		int count = 1;
+    		while((line = br.readLine()) != null && count < 10) 
+    		{
+    			Logger.i("count = " + (count++));
+    			STSender.testSend(line);
+    		}
+    		br.close();
+    	}
+    	else
+    	{
+    		Logger.e("Network unavailable");
+    	}
+    }
+    
     // Threaded Queue Unit Test
     public void threadedqueue(View v) throws InvalidSailthruEventException, IOException, InvalidLocationException
     {
@@ -69,15 +108,12 @@ public class MainActivity extends Activity {
 			{
 		    	Logger.i("Inserting elements.");
 		    	
-		    	ConcurrentLinkedQueue<STEvent> list = new ConcurrentLinkedQueue<STEvent>();
-		    	
 		    	for(int i = 1; i < 1000; i++)
 		    	{
 		    		SailthruEvent stevent;
 					try
 					{
 						stevent = new SailthruEvent.Builder().event("e"+i).tag("facebook").tag("google").url("www.sailthru.com").location(34, 12).build();
-						//list.add(stevent.getSTEvent());
 						STQueuer.addEvent(stevent.getSTEvent());
 						Logger.i("Added queue has " + STQueuer.getSize() + " elements.");
 					}
