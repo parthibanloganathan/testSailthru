@@ -84,6 +84,19 @@
 	    android:textColor="#00cced"
 	    android:onClick="sender"
 	    android:text="Test Sender" />  
+	    
+	<Button
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="20dp"
+	    android:paddingRight="20dp"
+	    android:layout_marginLeft="50dp"
+		android:layout_marginRight="50dp"
+	    android:layout_marginTop="370dp"
+	    android:background="#FFFFFF"
+	    android:textColor="#00cced"
+	    android:onClick="register"
+	    android:text="Test Register" />  
    
 </RelativeLayout>
 
