@@ -1,5 +1,6 @@
 package com.sailthru.test;
 
+import sailthru.Manager.Sailthru;
 import android.app.Application;
 
 import com.urbanairship.AirshipConfigOptions;
@@ -20,6 +21,9 @@ public class MyApplication extends Application {
 		UAirship.takeOff(this, options);
 		PushManager.shared().setIntentReceiver(IntentReceiver.class);
 		PushManager.enablePush();
+		
+		//Sailthru.init(this, "testapp", "prod-mobile.dannyrosen.net"); // from David
+		Sailthru.init(this, "testapp", "qa2-horizon.dannyrosen.net"); // from Danny
 		
 		String apid = PushManager.shared().getAPID();
 		Logger.info("My Application onCreate - App APID: " + apid);

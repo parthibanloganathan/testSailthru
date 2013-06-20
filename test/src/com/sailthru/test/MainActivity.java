@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,6 +15,7 @@ import sailthru.Event.STEvent;
 import sailthru.Event.SailthruEvent;
 import sailthru.Exceptions.InvalidLocationException;
 import sailthru.Exceptions.InvalidSailthruEventException;
+import sailthru.Manager.Sailthru;
 import sailthru.Queuer.STQueue;
 import sailthru.Queuer.STQueuer;
 import sailthru.Sender.STSender;
@@ -61,12 +63,36 @@ public class MainActivity extends Activity
 		Toast.makeText(getApplicationContext(), "APID: " + apid, Toast.LENGTH_SHORT).show();
 		Toast.makeText(getApplicationContext(), "MID: " + mid, Toast.LENGTH_SHORT).show();
 	}
+	
+	public void destroy(View v) throws IOException
+	{
+		Logger.i("STQueuer initially has " + STQueuer.getSize() + " elements.");
+		STQueuer.destroy();
+		int size = STQueuer.getSize();
+		Logger.i("STQueuer finally has " + size + " elements.");
+		assert size == 0;
+	}
+	
+	public void complete(View v) throws InvalidSailthruEventException
+	{
+		// Test 1 : Complete test
+		//RequestBuilder.setHID("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685"); // from David
+		RequestBuilder.setHID("7681c36c7238e52db05d38d41a71dacd517e83ef91ac72f9a49380a6d5cd3d953e3022ef1a989605e867a20b"); // from Danny
+		
+		ArrayList<String> tags = new ArrayList<String>();
+		tags.add("Galaxy Nexus");
+		tags.add("Android Device");
+		tags.add("Sailthru Test App");
+		SailthruEvent event = new SailthruEvent.Builder().tags(tags).event("Complete Test button pushed").location(14, 16).url("http://www.testingurl.com").build();
+		Sailthru.addEvent(event);
+	}
 
 	public void register(View v) throws IOException, NoSuchAlgorithmException
 	{
+		Toast.makeText(getApplicationContext(), "Register test initiated.", Toast.LENGTH_SHORT).show();
+		
 		if(started == false)
 		{
-			Logger.setLogTag("testapp");
 			started = true;
 
 			// Test 1 : Register app to obtain HID
@@ -82,13 +108,13 @@ public class MainActivity extends Activity
 	{
 		if(started == false)
 		{
-			NetworkManager.init(this);
-			STSender.setBaseUrl("prod-mobile.dannyrosen.net");
-			Logger.setLogTag("testapp");
-			RequestBuilder.setHID("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685");
+			//RequestBuilder.setHID("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685"); // from David
+			RequestBuilder.setHID("7681c36c7238e52db05d38d41a71dacd517e83ef91ac72f9a49380a6d5cd3d953e3022ef1a989605e867a20b"); // from Danny 
 			started = true;
 		}
 
+		Toast.makeText(getApplicationContext(), "Sender test initiated.", Toast.LENGTH_SHORT).show();
+		
 		// Test 1 : Queues events on sender
 
 		// Queue from Thread 1
@@ -202,12 +228,6 @@ public class MainActivity extends Activity
 		final int LIMIT = 50;
 		Toast.makeText(getApplicationContext(), "Request test initiated.", Toast.LENGTH_SHORT).show();
 
-		if(started == false)
-		{
-			Logger.setLogTag("testapp");
-			started = true;
-		}
-
 		NetworkManager.init(this);
 		if(NetworkManager.isNetworkAvailable())
 		{
@@ -233,13 +253,6 @@ public class MainActivity extends Activity
 	// Threaded Queue Unit Test
 	public void threadedqueue(View v) throws InvalidSailthruEventException, IOException, InvalidLocationException
 	{
-		if(started == false)
-		{
-			STQueuer.init(this, "testapp");
-			Logger.setLogTag("testapp");
-			started = true;
-		}
-
 		// Test 1 : Enqueues and dequeues elements from queue on two separate threads simultaneously.
 
 		Toast.makeText(getApplicationContext(), "Threaded queue test initiated.", Toast.LENGTH_SHORT).show();
@@ -299,27 +312,23 @@ public class MainActivity extends Activity
 	{
 		Toast.makeText(getApplicationContext(), "Queue test initiated.", Toast.LENGTH_SHORT).show();
 
-		if(started == false)
-		{
-			STQueuer.init(this, "testapp");
-			Logger.setLogTag("testapp");
-			started = true;
-		}
-
 		// Test 1 : Enqueue and dequeue 5000 elements
 		Logger.i("Inserting elements.");
 
-		for(int i = 1; i < 1000; i++)
+		for(int i = 0; i < 10; i++)
 		{
 			SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).tag("facebook").tag("google").url("www.sailthru.com").location(34, 12).build();
 			STQueuer.addEvent(stevent.getSTEvent());
 		}
+		int size = STQueue.getSize();
+		assert size == 5000;
 
-		Logger.i("Queue finally contains " + STQueue.getSize() + " elements.");
+		Logger.i("Queue finally contains " + size + " elements.");
 		Logger.i("Emptying queue.");
 
 		STQueuer.getEvents(10000);
 		Logger.i("Queue finally contains " + STQueue.getSize() + " elements.");
+		assert size == 0;
 
 		// Test 2 : Enqueue elements and dequeue some elements randomly
 		for(int n = 1; n <= 10; n++)
