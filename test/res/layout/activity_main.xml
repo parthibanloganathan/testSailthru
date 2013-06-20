@@ -79,7 +79,7 @@
 	    android:paddingRight="20dp"
 	    android:layout_marginLeft="50dp"
 		android:layout_marginRight="50dp"
-	    android:layout_marginTop="300dp"
+	    android:layout_marginTop="370dp"
 	    android:background="#FFFFFF"
 	    android:textColor="#00cced"
 	    android:onClick="sender"
@@ -92,12 +92,38 @@
 	    android:paddingRight="20dp"
 	    android:layout_marginLeft="50dp"
 		android:layout_marginRight="50dp"
-	    android:layout_marginTop="370dp"
+	    android:layout_marginTop="440dp"
 	    android:background="#FFFFFF"
 	    android:textColor="#00cced"
 	    android:onClick="register"
 	    android:text="Test Register" />  
    
+	<Button
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="20dp"
+	    android:paddingRight="20dp"
+	    android:layout_marginLeft="50dp"
+		android:layout_marginRight="50dp"
+	    android:layout_marginTop="510dp"
+	    android:background="#FFFFFF"
+	    android:textColor="#00cced"
+	    android:onClick="complete"
+	    android:text="Complete Test" />  
+	
+	<Button
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="20dp"
+	    android:paddingRight="20dp"
+	    android:layout_marginLeft="50dp"
+		android:layout_marginRight="50dp"
+	    android:layout_marginTop="580dp"
+	    android:background="#FFFFFF"
+	    android:textColor="#00cced"
+	    android:onClick="destroy"
+	    android:text="Destroy Queue" /> 	
+	
 </RelativeLayout>
 
 </ScrollView>
