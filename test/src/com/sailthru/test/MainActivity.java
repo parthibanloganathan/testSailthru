@@ -56,10 +56,8 @@ public class MainActivity extends Activity
 		Toast.makeText(getApplicationContext(), "Logo pressed", Toast.LENGTH_SHORT).show();
 	}
 
-	public void whiteButton(View v)
+	public void pushdata(View v)
 	{
-		Toast.makeText(getApplicationContext(), "White button presssed", Toast.LENGTH_SHORT).show();
-
 		Toast.makeText(getApplicationContext(), "APID: " + apid, Toast.LENGTH_SHORT).show();
 		Toast.makeText(getApplicationContext(), "MID: " + mid, Toast.LENGTH_SHORT).show();
 	}
@@ -82,7 +80,6 @@ public class MainActivity extends Activity
 		ArrayList<String> tags = new ArrayList<String>();
 		tags.add("Galaxy Nexus");
 		tags.add("Android Device");
-		tags.add("Sailthru Test App");
 		SailthruEvent event = new SailthruEvent.Builder().tags(tags).event("Complete Test button pushed").location(14, 16).url("http://www.testingurl.com").build();
 		Sailthru.addEvent(event);
 	}
