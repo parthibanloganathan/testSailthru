@@ -30,8 +30,8 @@
 	    android:layout_marginTop="90dp"
 	    android:background="#FFFFFF"
 	    android:textColor="#00cced"
-	    android:onClick="whiteButton"
-	    android:text="White Button" />
+	    android:onClick="pushdata"
+	    android:text="Retrieve push data" />
     
     <Button
 	    android:layout_width="fill_parent"
