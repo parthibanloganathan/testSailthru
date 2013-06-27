@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -64,6 +65,8 @@ public class MainActivity extends Activity
 	
 	public void destroy(View v) throws IOException
 	{
+		Toast.makeText(getApplicationContext(), "Destroyed queue.", Toast.LENGTH_SHORT).show();
+		
 		Logger.i("STQueuer initially has " + STQueuer.getSize() + " elements.");
 		STQueuer.destroy();
 		int size = STQueuer.getSize();
@@ -73,6 +76,8 @@ public class MainActivity extends Activity
 	
 	public void complete(View v) throws InvalidSailthruEventException
 	{
+		Toast.makeText(getApplicationContext(), "Complete test initiated.", Toast.LENGTH_SHORT).show();
+		
 		// Test 1 : Complete test
 		//RequestBuilder.setHID("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685"); // from David
 		RequestBuilder.setHID("7681c36c7238e52db05d38d41a71dacd517e83ef91ac72f9a49380a6d5cd3d953e3022ef1a989605e867a20b"); // from Danny
@@ -80,8 +85,11 @@ public class MainActivity extends Activity
 		ArrayList<String> tags = new ArrayList<String>();
 		tags.add("Galaxy Nexus");
 		tags.add("Android Device");
-		SailthruEvent event = new SailthruEvent.Builder().tags(tags).event("Complete Test button pushed").location(14, 16).url("http://www.testingurl.com").build();
-		Sailthru.addEvent(event);
+		for(int i = 0; i < 50; i++)
+		{
+			SailthruEvent event = new SailthruEvent.Builder().tags(tags).event("Complete Test button pushed").location(14, 16).url("http://www.testingurl.com").build();
+			Sailthru.addEvent(event);
+		}
 	}
 
 	public void register(View v) throws IOException, NoSuchAlgorithmException
@@ -119,7 +127,7 @@ public class MainActivity extends Activity
 		{
 			public void run()
 			{
-				ConcurrentLinkedQueue<STEvent> queue = new ConcurrentLinkedQueue<STEvent>();
+				Queue<STEvent> queue = new ConcurrentLinkedQueue<STEvent>();
 				for(int j = 0; j < 10; j++)
 				{
 					for(int i = 0; i < 10; i++)
@@ -156,7 +164,7 @@ public class MainActivity extends Activity
 		{
 			public void run()
 			{
-				ConcurrentLinkedQueue<STEvent> queue = new ConcurrentLinkedQueue<STEvent>();
+				Queue<STEvent> queue = new ConcurrentLinkedQueue<STEvent>();
 				for(int j = 0; j < 10; j++)
 				{
 					for(int i = 0; i < 10; i++)
@@ -343,7 +351,7 @@ public class MainActivity extends Activity
 
 			Logger.i("Dequeueing some elements.");
 
-			ConcurrentLinkedQueue<STEvent> result = STQueuer.getEvents((int) (Math.random()*50));
+			Queue<STEvent> result = STQueuer.getEvents((int) (Math.random()*50));
 
 			while(result.size() != 0)
 			{

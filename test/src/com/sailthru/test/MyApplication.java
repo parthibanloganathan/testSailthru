@@ -27,6 +27,5 @@ public class MyApplication extends Application {
 		
 		String apid = PushManager.shared().getAPID();
 		Logger.info("My Application onCreate - App APID: " + apid);
-		
 	}
 }
