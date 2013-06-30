@@ -8,8 +8,8 @@ Requires google-play-services_lib.
 
 Sailthru Android SDK is closed source. Only the test application is featured here.
 
-Includes followinf unit tests:
-+ Push notification app ID retrieval
+Includes following unit tests:
++ Push notification App ID retrieval
 + Enqueue and dequeue
 + Threaded enqueue and dequeue
 + Queue destruction
