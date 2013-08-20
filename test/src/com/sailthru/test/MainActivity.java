@@ -32,7 +32,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity
 {
-
+	public static String appName = "testapp";
 	public static String apid = "nil";
 	public static String mid = "nil";
 	public static boolean started = false;
@@ -67,6 +67,8 @@ public class MainActivity extends Activity
 	{
 		Toast.makeText(getApplicationContext(), "Destroyed queue.", Toast.LENGTH_SHORT).show();
 		
+		STQueuer.init(this);
+		
 		Logger.i("STQueuer initially has " + STQueuer.getSize() + " elements.");
 		STQueuer.destroy();
 		int size = STQueuer.getSize();
@@ -76,22 +78,22 @@ public class MainActivity extends Activity
 	
 	public void complete(View v) throws InvalidSailthruEventException
 	{
+		// NOTE: Make sure that the manager Sailthru is initialized in MyApplication for complete test
 		Toast.makeText(getApplicationContext(), "Complete test initiated.", Toast.LENGTH_SHORT).show();
 		
 		// Test 1 : Complete test
 		//RequestBuilder.setHID("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685"); // from David
 		RequestBuilder.setHID("7681c36c7238e52db05d38d41a71dacd517e83ef91ac72f9a49380a6d5cd3d953e3022ef1a989605e867a20b"); // from Danny
 		
-		ArrayList<String> tags = new ArrayList<String>();
-		tags.add("Galaxy Nexus");
-		tags.add("Android Device");
 		for(int i = 0; i < 50; i++)
 		{
-			SailthruEvent event = new SailthruEvent.Builder().tags(tags).event("Complete Test button pushed").location(14, 16).url("http://www.testingurl.com").build();
+			SailthruEvent event = new SailthruEvent.Builder().event("Complete Test button pushed").location(14, 16).url("http://www.testingurl.com").build();
 			Sailthru.addEvent(event);
 		}
 	}
 
+	// NOTE: Make sure that the manager Sailthru is NOT initialized in MyApplication for the following unit tests
+	
 	public void register(View v) throws IOException, NoSuchAlgorithmException
 	{
 		Toast.makeText(getApplicationContext(), "Register test initiated.", Toast.LENGTH_SHORT).show();
@@ -260,6 +262,8 @@ public class MainActivity extends Activity
 	{
 		// Test 1 : Enqueues and dequeues elements from queue on two separate threads simultaneously.
 
+		STQueuer.init(this);
+		
 		Toast.makeText(getApplicationContext(), "Threaded queue test initiated.", Toast.LENGTH_SHORT).show();
 
 		// Thread to enqueue events
@@ -274,7 +278,7 @@ public class MainActivity extends Activity
 					SailthruEvent stevent;
 					try
 					{
-						stevent = new SailthruEvent.Builder().event("e"+i).tag("facebook").tag("google").url("www.sailthru.com").location(34, 12).build();
+						stevent = new SailthruEvent.Builder().event("e"+i).url("www.sailthru.com").location(34, 12).build();
 						STQueuer.addEvent(stevent.getSTEvent());
 						Logger.i("Added queue has " + STQueuer.getSize() + " elements.");
 					}
@@ -317,12 +321,14 @@ public class MainActivity extends Activity
 	{
 		Toast.makeText(getApplicationContext(), "Queue test initiated.", Toast.LENGTH_SHORT).show();
 
+		STQueuer.init(this);
+		
 		// Test 1 : Enqueue and dequeue 5000 elements
 		Logger.i("Inserting elements.");
 
 		for(int i = 0; i < 10; i++)
 		{
-			SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).tag("facebook").tag("google").url("www.sailthru.com").location(34, 12).build();
+			SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).url("www.sailthru.com").location(34, 12).build();
 			STQueuer.addEvent(stevent.getSTEvent());
 		}
 		int size = STQueue.getSize();
@@ -343,7 +349,7 @@ public class MainActivity extends Activity
 			Logger.i("Adding random number of elements.");
 			for(int i = 0; i < 50 + Math.random()*50; i++)
 			{
-				SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).tag("facebook").tag("google").url("www.sailthru.com").location(34, 12).build();
+				SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).url("www.sailthru.com").location(34, 12).build();
 				STQueuer.addEvent(stevent.getSTEvent());
 			}
 

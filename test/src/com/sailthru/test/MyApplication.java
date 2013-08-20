@@ -22,8 +22,11 @@ public class MyApplication extends Application {
 		PushManager.shared().setIntentReceiver(IntentReceiver.class);
 		PushManager.enablePush();
 		
-		//Sailthru.init(this, "testapp", "prod-mobile.dannyrosen.net"); // from David
-		Sailthru.init(this, "testapp", "qa2-horizon.dannyrosen.net"); // from Danny
+		// Comment out the following initializations when performing any unit test apart from complete()
+		// If running the unit test complete(), make sure you run initialize first by uncommenting one of the following initializations
+		
+		//Sailthru.init(this, "prod-mobile.dannyrosen.net"); // from David
+		//Sailthru.init(this, "qa2-horizon.dannyrosen.net"); // from Danny
 		
 		String apid = PushManager.shared().getAPID();
 		Logger.info("My Application onCreate - App APID: " + apid);
