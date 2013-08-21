@@ -25,8 +25,8 @@ public class MyApplication extends Application {
 		// Comment out the following initializations when performing any unit test apart from complete()
 		// If running the unit test complete(), make sure you run initialize first by uncommenting one of the following initializations
 		
-		//Sailthru.init(this, "prod-mobile.dannyrosen.net"); // from David
-		//Sailthru.init(this, "qa2-horizon.dannyrosen.net"); // from Danny
+		//Sailthru.init(this, "prod-mobile.dannyrosen.net", true); // from David
+		//Sailthru.init(this, "qa2-horizon.dannyrosen.net", true); // from Danny
 		
 		String apid = PushManager.shared().getAPID();
 		Logger.info("My Application onCreate - App APID: " + apid);

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
@@ -79,6 +78,8 @@ public class MainActivity extends Activity
 	public void complete(View v) throws InvalidSailthruEventException
 	{
 		// NOTE: Make sure that the manager Sailthru is initialized in MyApplication for complete test
+		Sailthru.init(this, "prod-mobile.dannyrosen.net", true); // Should normally be initialized in MyApplication
+		
 		Toast.makeText(getApplicationContext(), "Complete test initiated.", Toast.LENGTH_SHORT).show();
 		
 		// Test 1 : Complete test
@@ -113,6 +114,8 @@ public class MainActivity extends Activity
 
 	public void sender(View v) throws IOException
 	{
+		// WARNING: This test won't stop logging network and sender status after sending all events.
+		
 		if(started == false)
 		{
 			//RequestBuilder.setHID("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685"); // from David
@@ -120,6 +123,8 @@ public class MainActivity extends Activity
 			started = true;
 		}
 
+		NetworkManager.init(this);
+		
 		Toast.makeText(getApplicationContext(), "Sender test initiated.", Toast.LENGTH_SHORT).show();
 		
 		// Test 1 : Queues events on sender
