@@ -1,7 +1,7 @@
 testSailthru
 ============
 
-Test Android app for the library libSailthru using push notifications.
+Test Android app for libSailthru using push notifications.
 
 Utilizes Urban Airship (http://docs.urbanairship.com/build/android.html) and Google Cloud Messaging (GCM).
 Requires google-play-services_lib.
