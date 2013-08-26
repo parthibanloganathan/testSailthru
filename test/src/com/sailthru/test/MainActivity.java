@@ -83,12 +83,12 @@ public class MainActivity extends Activity
 		Toast.makeText(getApplicationContext(), "Complete test initiated.", Toast.LENGTH_SHORT).show();
 		
 		// Test 1 : Complete test
-		//RequestBuilder.setHID("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685"); // from David
-		RequestBuilder.setHID("7681c36c7238e52db05d38d41a71dacd517e83ef91ac72f9a49380a6d5cd3d953e3022ef1a989605e867a20b"); // from Danny
+		//RequestBuilder.setAppTrackIds("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685", "have no idea what to put here, specs changed"); // from David
+		RequestBuilder.setAppTrackIds("7681c36c7238e52db05d38d41a71dacd517e83ef91ac72f9a49380a6d5cd3d953e3022ef1a989605e867a20b", "have no idea what to put here, specs changed"); // from Danny
 		
 		for(int i = 0; i < 50; i++)
 		{
-			SailthruEvent event = new SailthruEvent.Builder().event("Complete Test button pushed").location(14, 16).url("http://www.testingurl.com").build();
+			SailthruEvent event = new SailthruEvent.Builder().tag("complete_test").location(14, 16).url("http://www.testingurl.com").build();
 			Sailthru.addEvent(event);
 		}
 	}
@@ -118,8 +118,8 @@ public class MainActivity extends Activity
 		
 		if(started == false)
 		{
-			//RequestBuilder.setHID("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685"); // from David
-			RequestBuilder.setHID("7681c36c7238e52db05d38d41a71dacd517e83ef91ac72f9a49380a6d5cd3d953e3022ef1a989605e867a20b"); // from Danny 
+			//RequestBuilder.setAppTrackIds("6ca98d3b1f82eb204c6e506d5afac640515c717a21e070dffacfdd3ebffd899faa912160aa9024e8fb38d685", "have no idea what to put here, specs changed"); // from David
+			RequestBuilder.setAppTrackIds("7681c36c7238e52db05d38d41a71dacd517e83ef91ac72f9a49380a6d5cd3d953e3022ef1a989605e867a20b", "have no idea what to put here, specs changed"); // from Danny
 			started = true;
 		}
 
@@ -142,8 +142,8 @@ public class MainActivity extends Activity
 						SailthruEvent stevent;
 						try
 						{
-							stevent = new SailthruEvent.Builder().event("e"+j+"."+i).build();
-							Logger.i("Thread 1 added event to sender: " + stevent.getSTEvent().getEvent());
+							stevent = new SailthruEvent.Builder().tag("e"+j+"."+i).build();
+							Logger.i("Thread 1 added event to sender: " + stevent.getSTEvent().getTags().get(0));
 							queue.add(stevent.getSTEvent());
 						}
 						catch(Exception e)
@@ -179,8 +179,8 @@ public class MainActivity extends Activity
 						SailthruEvent stevent;
 						try
 						{
-							stevent = new SailthruEvent.Builder().event("e"+j+"."+i).build();
-							Logger.i("Thread 2 added event to sender: " + stevent.getSTEvent().getEvent());
+							stevent = new SailthruEvent.Builder().tag("e"+j+"."+i).build();
+							Logger.i("Thread 2 added event to sender: " + stevent.getSTEvent().getTags().get(0));
 							queue.add(stevent.getSTEvent());
 						}
 						catch(Exception e)
@@ -283,7 +283,7 @@ public class MainActivity extends Activity
 					SailthruEvent stevent;
 					try
 					{
-						stevent = new SailthruEvent.Builder().event("e"+i).url("www.sailthru.com").location(34, 12).build();
+						stevent = new SailthruEvent.Builder().tag("e"+i).url("www.sailthru.com").location(34, 12).build();
 						STQueuer.addEvent(stevent.getSTEvent());
 						Logger.i("Added queue has " + STQueuer.getSize() + " elements.");
 					}
@@ -333,7 +333,7 @@ public class MainActivity extends Activity
 
 		for(int i = 0; i < 10; i++)
 		{
-			SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).url("www.sailthru.com").location(34, 12).build();
+			SailthruEvent stevent = new SailthruEvent.Builder().tag("e"+i).url("www.sailthru.com").location(34, 12).build();
 			STQueuer.addEvent(stevent.getSTEvent());
 		}
 		int size = STQueue.getSize();
@@ -354,7 +354,7 @@ public class MainActivity extends Activity
 			Logger.i("Adding random number of elements.");
 			for(int i = 0; i < 50 + Math.random()*50; i++)
 			{
-				SailthruEvent stevent = new SailthruEvent.Builder().event("e"+i).url("www.sailthru.com").location(34, 12).build();
+				SailthruEvent stevent = new SailthruEvent.Builder().tag("e"+i).location(34, 12).build();
 				STQueuer.addEvent(stevent.getSTEvent());
 			}
 
@@ -366,7 +366,7 @@ public class MainActivity extends Activity
 
 			while(result.size() != 0)
 			{
-				Logger.i("Dequeued: " + result.poll().getEvent());
+				Logger.i("Dequeued: " + result.poll().getTags().get(0));
 			}
 
 			Logger.i("Queue finally contains " + STQueue.getSize() + " elements.");
